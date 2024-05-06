@@ -1,0 +1,20 @@
+p = Parameter('p')
+qc = QuantumCircuit(3, name='oracle')
+qc.rz(p, 0)
+qc.cx(0, 1)
+qc.rz(p, 1)
+qc.cx(1, 2)
+qc.rz(p, 2)
+
+theta = Parameter('theta')
+phi = Parameter('phi')
+gamma = Parameter('gamma')
+
+qr = QuantumRegister(9)
+larger_qc = QuantumCircuit(qr)
+larger_qc.append(qc.to_instruction({p: theta}), qr[0:3])
+larger_qc.append(qc.to_instruction({p: phi}), qr[3:6])
+larger_qc.append(qc.to_instruction({p: gamma}), qr[6:9])
+print(larger_qc.draw())
+
+print(larger_qc.decompose().draw())
